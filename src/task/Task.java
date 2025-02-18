@@ -1,3 +1,5 @@
+package task;
+
 public class Task {
     private int id;
     private String name;
@@ -9,13 +11,11 @@ public class Task {
         this.description = description;
     }
 
-    protected  void setId(int id){
-        if(this.id == 0) {
-            this.id = id;
-        }
+    public  void setId(int id){
+        this.id = id;
     }
 
-    protected int getId(){
+    public int getId(){
         return id;
     }
 
@@ -58,7 +58,7 @@ public class Task {
 
     @Override
     public String toString() {
-        return "Task{" +
+        return "task.Task{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +

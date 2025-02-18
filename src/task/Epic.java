@@ -1,6 +1,8 @@
+package task;
+
 import java.util.HashMap;
 
-public class Epic extends  Task{
+public class Epic extends Task {
     private HashMap<Integer, Subtask> subTasks = new HashMap<>();
 
     public Epic(String name, String description){
@@ -21,7 +23,7 @@ public class Epic extends  Task{
 
     @Override
     public String toString() {
-        return "Epic{" +
+        return "task.Epic{" +
                 "id=" + super.getId() +
                 ", name='" + super.getName() + '\'' +
                 ", description='" + super.getDescription() + '\'' +

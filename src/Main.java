@@ -1,3 +1,4 @@
+import manager.TaskManager;
 import task.Epic;
 import task.Status;
 import task.Subtask;
@@ -44,7 +45,8 @@ public class Main {
 
         System.out.println("Список задач' - "+taskManager.getTasks().toString());
         System.out.println("Список эпиков' - "+taskManager.getTasks().toString());
-        System.out.println("Список подзадач' - "+taskManager.getListSubTasks().toString());
+        System.out.println("Список подзадач эпика 1' - "+taskManager.getSubtasks(epic1).toString());
+        System.out.println("Список подзадач эпика 2' - "+taskManager.getSubtasks(epic2).toString());
         System.out.println("-----------------------------------------------------------------------");
 
         task1.setStatus(Status.IN_PROGRESS);
@@ -82,7 +84,8 @@ public class Main {
         System.out.println("Задача 2.1 после обновления - "+subtask21);
         System.out.println("-----------------------------------------------------------------------");
         System.out.println("Список эпиков' - "+taskManager.getEpics().toString());
-        System.out.println("Список подзадач' - "+taskManager.getListSubTasks().toString());
+        System.out.println("Список подзадач эпика 1' - "+taskManager.getSubtasks(epic1).toString());
+        System.out.println("Список подзадач эпика 2' - "+taskManager.getSubtasks(epic2).toString());
         System.out.println("-----------------------------------------------------------------------");
         System.out.println("Список задач эпика 1 после обновления- "+taskManager.getSubtasks(epic1));
         System.out.println("Список задач эпика 2 после обновления- "+taskManager.getSubtasks(epic2));
@@ -94,22 +97,24 @@ public class Main {
 
         taskManager.deleteSubtask(subtask11, epic1);
         System.out.println("Список эпиков после удаления подзадачи' - "+taskManager.getEpics().toString());
-        System.out.println("Список подзадач после удаления подзадачи' - "+taskManager.getListSubTasks().toString());
+        System.out.println("Список подзадач эпика 1 после удаления подзадачи' - "+taskManager.getSubtasks(epic1).toString());
+        System.out.println("Список подзадач эпика 2 после удаления подзадачи' - "+taskManager.getSubtasks(epic2).toString());
         System.out.println("-----------------------------------------------------------------------");
 
         taskManager.deleteEpic(epic2);
         System.out.println("Список эпиков после удаления эпика' - "+taskManager.getEpics().toString());
-        System.out.println("Список подзадач после удаления эпика' - "+taskManager.getListSubTasks().toString());
+        System.out.println("Список подзадач эпика 2 после удаления эпика 2' - "+taskManager.getSubtasks(epic1).toString());
         System.out.println("-----------------------------------------------------------------------");
         taskManager.deleteSubtaskById(6);
         System.out.println("Список эпиков после удаления подзадачи по ид' - "+taskManager.getEpics().toString());
-        System.out.println("Список подзадач после удаления подзадачи по ид' - "+taskManager.getListSubTasks().toString());
+        System.out.println("Список подзадач эпика 1 после удаления подзадачи по ид' - "+taskManager.getSubtasks(epic1).toString());
         System.out.println("-----------------------------------------------------------------------");
         taskManager.clearTask();
         taskManager.clearEpic();
         taskManager.clearSubtask();
         System.out.println("Список эпиков после очистки' - "+taskManager.getEpics().toString());
-        System.out.println("Список подзадач после очистки' - "+taskManager.getListSubTasks().toString());
+        System.out.println("Список подзадач эпика 1 после очистки' - "+taskManager.getSubtasks(epic1).toString());
+        System.out.println("Список подзадач эпика 2 после очистки' - "+taskManager.getSubtasks(epic2).toString());
         System.out.println("Список задач после очистки' - "+taskManager.getTasks().toString());
 
         System.out.println("Приехали!");

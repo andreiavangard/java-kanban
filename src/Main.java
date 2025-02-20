@@ -110,7 +110,7 @@ public class Main {
         System.out.println("Список подзадач эпика 1 после удаления подзадачи по ид' - "+taskManager.getSubtasks(epic1).toString());
         System.out.println("-----------------------------------------------------------------------");
         taskManager.clearTask();
-        taskManager.clearEpic();
+        taskManager.clearEpics();
         taskManager.clearSubtask();
         System.out.println("Список эпиков после очистки' - "+taskManager.getEpics().toString());
         System.out.println("Список подзадач эпика 1 после очистки' - "+taskManager.getSubtasks(epic1).toString());

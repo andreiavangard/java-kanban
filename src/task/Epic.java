@@ -25,6 +25,17 @@ public class Epic extends Task {
         return subTasks;
     }
 
+    public  Subtask clone(Subtask task){
+        return null;
+    }
+
+    public Epic clone(){
+        Epic epicClone = new Epic(getName(), getDescription());
+        epicClone.setId(getId());
+        epicClone.setStatus(getStatus());
+        return epicClone;
+    }
+
     @Override
     public String toString() {
         return "task.Epic{" +

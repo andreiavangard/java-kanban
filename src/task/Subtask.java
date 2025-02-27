@@ -15,6 +15,13 @@ public class Subtask extends Task {
         return epicId;
     }
 
+    public Subtask clone(){
+        Subtask subtaskClone = new Subtask(getName(), getDescription());
+        subtaskClone.setId(getId());
+        subtaskClone.setStatus(getStatus());
+        return subtaskClone;
+    }
+
     @Override
     public String toString() {
         return "SubTask{" +

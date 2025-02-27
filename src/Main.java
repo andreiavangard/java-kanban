@@ -1,4 +1,7 @@
+import manager.InMemoryTaskManager;
+import manager.Managers;
 import manager.TaskManager;
+//import manager.InMemoryTaskManager;
 import task.Epic;
 import task.Status;
 import task.Subtask;
@@ -9,7 +12,7 @@ public class Main {
     public static void main(String[] args) {
         System.out.println("Поехали!");
         System.out.println("-----------------------------------------------------------------------");
-        TaskManager taskManager = new TaskManager();
+        TaskManager taskManager = Managers.getDefault();
 
 
         Task task1 = new Task("Задача номер 1", "Описание задачи номер 1");
@@ -118,6 +121,11 @@ public class Main {
         System.out.println("Список задач после очистки' - "+taskManager.getTasks().toString());
 
         System.out.println("Приехали!");
+
+        System.out.println("-----------------------------------------------------------------------");
+        System.out.println("История просмотров");
+        System.out.println(taskManager.getHistory());
+
 
 
     }

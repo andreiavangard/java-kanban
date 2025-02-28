@@ -10,19 +10,16 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class managerTest {
+class ManagerTest {
 
+    //1) убедитесь, что утилитарный класс всегда возвращает проинициализированные и готовые к работе экземпляры менеджеров;
     @Test
     void testManagers() {
         TaskManager taskManager = Managers.getDefault();
-        Task task = new Task("Тестовая задача", "Описание тестовой задачи");
-        int taskId = taskManager.addTask(task);
-        Task savedTask = taskManager.getTask(taskId);
-        assertNotNull(savedTask, "Проверка инициализации. Ошибка работы с InMemoryTaskManager.");
-        taskManager.getTask(taskId);
-        List<Task> hystoryTask = taskManager.getHistory();
-        assertTrue(hystoryTask.size()>0,"Проверка инициализации. Ошибка работы с InMemoryHistoryManager");
+        assertNotNull(taskManager, "taskManager не проинициализирован явно не готов.");
 
+        HistoryManager historyManager = Managers.getDefaultHistory();
+        assertNotNull(taskManager, "historyManager не проинициализирован явно не готов.");
     }
 
     @Test

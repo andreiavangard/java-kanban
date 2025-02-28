@@ -17,7 +17,7 @@ class EpicTest {
         taskManager = Managers.getDefault();
     }
 
-
+    //2) проверьте, что InMemoryTaskManager действительно добавляет задачи разного типа и может найти их по id;
     @Test
     void addNewEpicSubtask() {
         //Эпики
@@ -63,6 +63,7 @@ class EpicTest {
         assertEquals(subtask, cloneSubtask, "Задачи c одинаковым id не совпадают.");
     }
 
+    //4) создайте тест, в котором проверяется неизменность задачи (по всем полям) при добавлении задачи в менеджер
     //проверяется неизменность задачи (по всем полям) при добавлении задачи в менеджер
     @Test
     void checkTheImmutabilityOfTaskWhenAddingToManager(){
@@ -81,6 +82,7 @@ class EpicTest {
         assertEquals(subtask.getDescription(), savedSubtask.getDescription(), "Не совпадает описание");
     }
 
+    //5) убедитесь, что задачи, добавляемые в HistoryManager, сохраняют предыдущую версию задачи и её данных.
     //задача, добавляемая в HistoryManager, сохраняет предыдущую версию задачи и её данных.
     @Test
     void taskAdedToTheHistoryManagerSavesPreviousVersionOfTaskAndData(){
@@ -168,4 +170,5 @@ class EpicTest {
         assertEquals(epic.getStatus(), Status.NEW, "Эпик неправильно возобновил статус NEW.");
 
     }
+
 }

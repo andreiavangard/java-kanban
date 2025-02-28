@@ -15,6 +15,7 @@ class TaskTest {
     }
 
 
+    //2) проверьте, что InMemoryTaskManager действительно добавляет задачи разного типа и может найти их по id;
     @Test
     void addNewTask() {
         Task task = new Task("Тестовая задача", "Описание тестовой задачи");
@@ -40,6 +41,7 @@ class TaskTest {
         assertEquals(task, cloneTask, "Задачи c одинаковым id не совпадают.");
     }
 
+    //4) создайте тест, в котором проверяется неизменность задачи (по всем полям) при добавлении задачи в менеджер
     //проверяется неизменность задачи (по всем полям) при добавлении задачи в менеджер
     @Test
     void checkTheImmutabilityOfTaskWhenAddingToManager(){
@@ -51,6 +53,7 @@ class TaskTest {
         assertEquals(task.getDescription(), savedTask.getDescription(), "Не совпадает описание");
     }
 
+    //5) убедитесь, что задачи, добавляемые в HistoryManager, сохраняют предыдущую версию задачи и её данных.
     //задача, добавляемая в HistoryManager, сохраняет предыдущую версию задачи и её данных.
     @Test
     void taskAdedToTheHistoryManagerSavesPreviousVersionOfTaskAndData(){
@@ -73,6 +76,15 @@ class TaskTest {
         Task task = new Task("Тестовая задача", "Описание тестовой задачи");
         taskManager.addTask(task);
         assertEquals(task.getStatus(), Status.NEW, "Задача при создании не установила статус новый.");
+    }
+
+    //3) проверьте, что задачи с заданным id и сгенерированным id не конфликтуют внутри менеджера;
+    @Test
+    void tasksWithGivenIdAndGeneratedIdNotConflict(){
+        Task task = new Task("Тестовая задача", "Описание тестовой задачи");
+        task.setId(-1);
+        taskManager.addTask(task);
+        assertTrue(task.getId()>=0,"Присвоенный ид не переопределяется в менеджере");
     }
 
 }

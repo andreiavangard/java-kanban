@@ -8,18 +8,15 @@ import task.Task;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 public class InMemoryTaskManager implements TaskManager  {
     private int globalTaskId;
-    private HashMap<Integer, Task> tasks = new HashMap<>();
-    private HashMap<Integer, Subtask> subTasks = new HashMap<>();
-    private HashMap<Integer, Epic> epics = new HashMap<>();
-    private HistoryManager historyManager;
-
-    public InMemoryTaskManager(HistoryManager historyManager){
-        this.historyManager = historyManager;
-    }
+    private Map<Integer, Task> tasks = new HashMap<>();
+    private Map<Integer, Subtask> subTasks = new HashMap<>();
+    private Map<Integer, Epic> epics = new HashMap<>();
+    private HistoryManager historyManager = Managers.getDefaultHistory();
 
     @Override
     public List<Task> getHistory(){

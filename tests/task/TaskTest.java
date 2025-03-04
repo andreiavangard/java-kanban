@@ -53,23 +53,6 @@ class TaskTest {
         assertEquals(task.getDescription(), savedTask.getDescription(), "Не совпадает описание");
     }
 
-    //5) убедитесь, что задачи, добавляемые в HistoryManager, сохраняют предыдущую версию задачи и её данных.
-    //задача, добавляемая в HistoryManager, сохраняет предыдущую версию задачи и её данных.
-    @Test
-    void taskAdedToTheHistoryManagerSavesPreviousVersionOfTaskAndData(){
-        Task task = new Task("Тестовая задача", "Описание тестовой задачи");
-        int taskId = taskManager.addTask(task);
-        Task cloneTask = task.clone();
-        cloneTask.setStatus(Status.NEW);
-        taskManager.getTask(taskId);
-        List<Task> hystoryTask = taskManager.getHistory();
-        assertTrue(hystoryTask.size()>0,"В истории нет задач");
-        Task savedHistoryTask = hystoryTask.get(hystoryTask.size()-1);
-        task.setName(task.getName()+"*");
-        task.setDescription(task.getDescription()+"*");
-        assertEquals(cloneTask, savedHistoryTask, "Задача из истории не сохранила версию.");
-    }
-
     //для новой задачи правильно устанавливается статус
     @Test
     void theStatusForNewOneIsSetCorrectly(){

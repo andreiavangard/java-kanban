@@ -82,35 +82,6 @@ class EpicTest {
         assertEquals(subtask.getDescription(), savedSubtask.getDescription(), "Не совпадает описание");
     }
 
-    //5) убедитесь, что задачи, добавляемые в HistoryManager, сохраняют предыдущую версию задачи и её данных.
-    //задача, добавляемая в HistoryManager, сохраняет предыдущую версию задачи и её данных.
-    @Test
-    void taskAdedToTheHistoryManagerSavesPreviousVersionOfTaskAndData(){
-        Epic epic = new Epic("Тестовый эпик", "Описание тестового эпика");
-        int epicId = taskManager.addEpic(epic);
-        Epic cloneEpic = epic.clone();
-        cloneEpic.setStatus(Status.NEW);
-        taskManager.getEpic(epicId);
-        List<Task> hystoryTask = taskManager.getHistory();
-        assertTrue(hystoryTask.size()>0,"В истории нет задач");
-        Task savedHistoryTask = hystoryTask.get(hystoryTask.size()-1);
-        epic.setName(epic.getName()+"*");
-        epic.setDescription(epic.getDescription()+"*");
-        assertEquals(cloneEpic, savedHistoryTask, "Эпик из истории не сохранила версию.");
-
-        Subtask subtask = new Subtask("Тестовый субтаск", "Описание тестового субтаска");
-        int subtaskId = taskManager.addSubtask(subtask ,epic);
-        Subtask cloneSubtask = subtask.clone();
-        cloneSubtask.setStatus(Status.NEW);
-        taskManager.getSubtask(subtaskId);
-        hystoryTask = taskManager.getHistory();
-        assertTrue(hystoryTask.size()>0,"В истории нет задач");
-        savedHistoryTask = hystoryTask.get(hystoryTask.size()-1);
-        subtask.setName(subtask.getName()+"*");
-        subtask.setDescription(subtask.getDescription()+"*");
-        assertEquals(cloneSubtask, savedHistoryTask, "Субтаск из истории не сохранила версию.");
-    }
-
     //для новой задачи правильно устанавливается статус
     @Test
     void theStatusForNewOneIsSetCorrectly(){

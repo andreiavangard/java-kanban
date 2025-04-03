@@ -14,7 +14,7 @@ public class myLinkedHashMapTest {
     static Task task3;
 
     @BeforeEach
-    void beforeAll(){
+    void beforeAll() {
         historyManager = new InMemoryHistoryManager();
         TaskManager taskManager = Managers.getDefault();
         task1 = new Task("Тестовая задача1", "Описание тестовой задачи1");
@@ -31,15 +31,15 @@ public class myLinkedHashMapTest {
     @Test
     void addDeleteOneElement() {
         historyManager.add(task1);
-        assertEquals(historyManager.getHistory().size(),1);
+        assertEquals(historyManager.getHistory().size(), 1);
         assertNotNull(historyManager.getHeader(), "Header не заполнен.");
         assertNotNull(historyManager.getTail(), "Tail не заполнен.");
-        assertSame(historyManager.getHeader(), historyManager.getTail(),"При добавлении одного элемента голова не равна хвосту");
-        assertSame(historyManager.getHeader().getData(), task1,"Голова указывает не на правильную задачу");
+        assertSame(historyManager.getHeader(), historyManager.getTail(), "При добавлении одного элемента голова не равна хвосту");
+        assertSame(historyManager.getHeader().getData(), task1, "Голова указывает не на правильную задачу");
         historyManager.remove(task1.getId());
         assertNull(historyManager.getHeader(), "Header не очищен.");
         assertNull(historyManager.getTail(), "Tail не очищен.");
-        assertEquals(historyManager.getHistory().size(),0);
+        assertEquals(historyManager.getHistory().size(), 0);
     }
 
     @Test
@@ -47,14 +47,14 @@ public class myLinkedHashMapTest {
         historyManager.add(task1);
         historyManager.add(task2);
         historyManager.add(task3);
-        assertEquals(historyManager.getHistory().size(),3);
+        assertEquals(historyManager.getHistory().size(), 3);
         assertNotNull(historyManager.getHeader(), "Header не заполнен.");
         assertNotNull(historyManager.getTail(), "Tail не заполнен.");
-        assertSame(historyManager.getHeader().getData(), task3,"Голова указывает не на правильную задачу");
-        assertSame(historyManager.getTail().getData(), task1,"Хвост указывает не на правильную задачу");
+        assertSame(historyManager.getHeader().getData(), task3, "Голова указывает не на правильную задачу");
+        assertSame(historyManager.getTail().getData(), task1, "Хвост указывает не на правильную задачу");
         historyManager.remove(task3.getId());
-        assertEquals(historyManager.getHistory().size(),2);
-        assertSame(historyManager.getHeader().getData(), task2,"Голова указывает не на правильную задачу");
+        assertEquals(historyManager.getHistory().size(), 2);
+        assertSame(historyManager.getHeader().getData(), task2, "Голова указывает не на правильную задачу");
         assertNull(historyManager.getHeader().getNext(), "В голове не очищена ссылка на следующий элемент.");
     }
 
@@ -63,14 +63,14 @@ public class myLinkedHashMapTest {
         historyManager.add(task1);
         historyManager.add(task2);
         historyManager.add(task3);
-        assertEquals(historyManager.getHistory().size(),3);
+        assertEquals(historyManager.getHistory().size(), 3);
         assertNotNull(historyManager.getHeader(), "Header не заполнен.");
         assertNotNull(historyManager.getTail(), "Tail не заполнен.");
-        assertSame(historyManager.getHeader().getData(), task3,"Голова указывает не на правильную задачу");
-        assertSame(historyManager.getTail().getData(), task1,"Хвост указывает не на правильную задачу");
+        assertSame(historyManager.getHeader().getData(), task3, "Голова указывает не на правильную задачу");
+        assertSame(historyManager.getTail().getData(), task1, "Хвост указывает не на правильную задачу");
         historyManager.remove(task1.getId());
-        assertEquals(historyManager.getHistory().size(),2);
-        assertSame(historyManager.getTail().getData(), task2,"Хвост указывает не на правильную задачу");
+        assertEquals(historyManager.getHistory().size(), 2);
+        assertSame(historyManager.getTail().getData(), task2, "Хвост указывает не на правильную задачу");
         assertNull(historyManager.getTail().getPrev(), "В хвосте не очищена ссылка на предыдущий элемент.");
     }
 
@@ -79,16 +79,16 @@ public class myLinkedHashMapTest {
         historyManager.add(task1);
         historyManager.add(task2);
         historyManager.add(task3);
-        assertEquals(historyManager.getHistory().size(),3);
+        assertEquals(historyManager.getHistory().size(), 3);
         assertNotNull(historyManager.getHeader(), "Header не заполнен.");
         assertNotNull(historyManager.getTail(), "Tail не заполнен.");
-        assertSame(historyManager.getHeader().getData(), task3,"Голова указывает не на правильную задачу");
-        assertSame(historyManager.getTail().getData(), task1,"Хвост указывает не на правильную задачу");
+        assertSame(historyManager.getHeader().getData(), task3, "Голова указывает не на правильную задачу");
+        assertSame(historyManager.getTail().getData(), task1, "Хвост указывает не на правильную задачу");
         historyManager.remove(task2.getId());
-        assertEquals(historyManager.getHistory().size(),2);
-        assertSame(historyManager.getHeader().getData(), task3,"Голова указывает не на правильную задачу");
-        assertSame(historyManager.getTail().getData(), task1,"Хвост указывает не на правильную задачу");
-        assertSame(historyManager.getNodeByIdTask(task1.getId()).getNext(), historyManager.getNodeByIdTask(task3.getId()),"Первая задача не ссылается на третью");
-        assertSame(historyManager.getNodeByIdTask(task1.getId()), historyManager.getNodeByIdTask(task3.getId()).getPrev(),"Третья задача не ссылается на первую");
+        assertEquals(historyManager.getHistory().size(), 2);
+        assertSame(historyManager.getHeader().getData(), task3, "Голова указывает не на правильную задачу");
+        assertSame(historyManager.getTail().getData(), task1, "Хвост указывает не на правильную задачу");
+        assertSame(historyManager.getNodeByIdTask(task1.getId()).getNext(), historyManager.getNodeByIdTask(task3.getId()), "Первая задача не ссылается на третью");
+        assertSame(historyManager.getNodeByIdTask(task1.getId()), historyManager.getNodeByIdTask(task3.getId()).getPrev(), "Третья задача не ссылается на первую");
     }
 }

@@ -4,13 +4,16 @@ import manager.Managers;
 import manager.TaskManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
 import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class TaskTest {
     static TaskManager taskManager;
+
     @BeforeEach
-    void beforeAll(){
+    void beforeAll() {
         taskManager = Managers.getDefault();
     }
 
@@ -33,18 +36,18 @@ class TaskTest {
 
     //тест проверяет, что экземпляры с одинковым id равны
     @Test
-    void instancesTaskEqualIfTheirIdIsEqual(){
+    void instancesTaskEqualIfTheirIdIsEqual() {
         Task task = new Task("Тестовая задача", "Описание тестовой задачи");
         Task cloneTask = task.clone();
-        cloneTask.setName(cloneTask.getName()+"*");
-        cloneTask.setDescription(cloneTask.getDescription()+"*");
+        cloneTask.setName(cloneTask.getName() + "*");
+        cloneTask.setDescription(cloneTask.getDescription() + "*");
         assertEquals(task, cloneTask, "Задачи c одинаковым id не совпадают.");
     }
 
     //4) создайте тест, в котором проверяется неизменность задачи (по всем полям) при добавлении задачи в менеджер
     //проверяется неизменность задачи (по всем полям) при добавлении задачи в менеджер
     @Test
-    void checkTheImmutabilityOfTaskWhenAddingToManager(){
+    void checkTheImmutabilityOfTaskWhenAddingToManager() {
         Task task = new Task("Тестовая задача", "Описание тестовой задачи");
         int taskId = taskManager.addTask(task);
         Task savedTask = taskManager.getTask(taskId);
@@ -55,18 +58,18 @@ class TaskTest {
 
     //для новой задачи правильно устанавливается статус
     @Test
-    void theStatusForNewOneIsSetCorrectly(){
+    void theStatusForNewOneIsSetCorrectly() {
         Task task = new Task("Тестовая задача", "Описание тестовой задачи");
         taskManager.addTask(task);
         assertEquals(task.getStatus(), Status.NEW, "Задача при создании не установила статус новый.");
     }
 
     @Test
-    void assignedIdCannotBeRedefined(){
+    void assignedIdCannotBeRedefined() {
         Task task = new Task("Тестовая задача", "Описание тестовой задачи");
         int id = taskManager.addTask(task);
         task.setId(-1);
-        assertEquals(task.getId(), id,"Присвоенный ид не переопределяется в менеджере");
+        assertEquals(task.getId(), id, "Присвоенный ид не переопределяется в менеджере");
     }
 
 }

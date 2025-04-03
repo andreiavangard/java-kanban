@@ -13,8 +13,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ManagerTest {
     static TaskManager taskManager;
+
     @BeforeEach
-    void beforeAll(){
+    void beforeAll() {
         taskManager = Managers.getDefault();
     }
 
@@ -36,7 +37,7 @@ class ManagerTest {
         taskManager.getTask(taskId);
 
         Epic epic = new Epic("Тестовый эпик", "Описание тестового эпика");
-        int epicId =  taskManager.addEpic(epic);
+        int epicId = taskManager.addEpic(epic);
         taskManager.getEpic(epicId);
 
         Subtask subtask = new Subtask("Test addNewSubtask", "Test addNewSubtask description");
@@ -44,14 +45,14 @@ class ManagerTest {
         taskManager.getSubtask(subtaskId);
 
         List<Task> hystoriTask = taskManager.getHistory();
-        assertTrue(hystoriTask.size()==3,"Проверка инициализации. Ошибка работы с InMemoryHistoryManager");
+        assertTrue(hystoriTask.size() == 3, "Проверка инициализации. Ошибка работы с InMemoryHistoryManager");
 
     }
 
     //5) убедитесь, что задачи, добавляемые в HistoryManager, сохраняют предыдущую версию задачи и её данных.
     //задача, добавляемая в HistoryManager, сохраняет предыдущую версию задачи и её данных.
     @Test
-    void epicSubtaskAdedToTheHistoryManagerSavesPreviousVersionOfTaskAndData(){
+    void epicSubtaskAdedToTheHistoryManagerSavesPreviousVersionOfTaskAndData() {
         //создали эпик в переменную epic
         Epic epic = new Epic("Тестовый эпик", "Описание тестового эпика");
         int epicId = taskManager.addEpic(epic);
@@ -60,26 +61,26 @@ class ManagerTest {
         //получаем историю
         List<Task> hystoriTask = taskManager.getHistory();
         //защита от пустой истории, если история пустая то здесь упадем
-        assertTrue(hystoriTask.size()>0,"В истории нет задач");
+        assertTrue(hystoriTask.size() > 0, "В истории нет задач");
         //получаем последний эпик из истории
-        Task savedHistoryEpic = hystoriTask.get(hystoriTask.size()-1);
+        Task savedHistoryEpic = hystoriTask.get(hystoriTask.size() - 1);
         //меняем эпик
-        epic.setName(epic.getName()+"*");
+        epic.setName(epic.getName() + "*");
         //проверяем что новое имя не совпадает со старым
         assertNotEquals(epic.getName(), savedHistoryEpic.getName(), "Эпик из истории не сохранила версию.");
 
         //создаем субтаску помещаем ее в переменную task
         Subtask subtask = new Subtask("Тестовый субтаск", "Описание тестового субтаска");
-        int subtaskId = taskManager.addSubtask(subtask ,epic);
+        int subtaskId = taskManager.addSubtask(subtask, epic);
         //вызываем метод getSubtask чтобы субтаска попала в историю
         taskManager.getSubtask(subtaskId);
         //получаем историю
         hystoriTask = taskManager.getHistory();
         //защита от пустой истории, если история пустая то здесь упадем
-        assertTrue(hystoriTask.size()>0,"В истории нет задач");
+        assertTrue(hystoriTask.size() > 0, "В истории нет задач");
         //получаем последнюю субтаску из истории
-        Task savedHistorySubtask = hystoriTask.get(hystoriTask.size()-1);
-        subtask.setName(subtask.getName()+"*");
+        Task savedHistorySubtask = hystoriTask.get(hystoriTask.size() - 1);
+        subtask.setName(subtask.getName() + "*");
         //проверяем что новое имя не совпадает со старым
         assertNotEquals(subtask.getName(), savedHistorySubtask.getName(), "Субтаск из истории не сохранила версию.");
     }
@@ -87,7 +88,7 @@ class ManagerTest {
     //5) убедитесь, что задачи, добавляемые в HistoryManager, сохраняют предыдущую версию задачи и её данных.
     //задача, добавляемая в HistoryManager, сохраняет предыдущую версию задачи и её данных.
     @Test
-    void taskAdedToTheHistoryManagerSavesPreviousVersionOfTaskAndData(){
+    void taskAdedToTheHistoryManagerSavesPreviousVersionOfTaskAndData() {
         //создаем таску помещаем ее в переменную task
         Task task = new Task("Тестовая задача", "Описание тестовой задачи");
         int taskId = taskManager.addTask(task);
@@ -96,7 +97,7 @@ class ManagerTest {
         //получаем задачу из истории
         Task savedHistoryTask = taskManager.getTaskInHistoryById(taskId);
         assertNotNull(savedHistoryTask, "Задача не записалась в историю");
-        task.setName(task.getName()+"**");
+        task.setName(task.getName() + "**");
         //проверяем что новое имя не совпадает со старым
         String n1 = task.getName();
         String n2 = savedHistoryTask.getName();

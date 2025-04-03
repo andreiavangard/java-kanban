@@ -6,19 +6,19 @@ public class Task {
     private String description;
     private Status status;
 
-    public Task(String name, String description){
+    public Task(String name, String description) {
         this.name = name;
         this.description = description;
     }
 
-    public  void setId(int id){
-        if(this.id==0) {
+    public void setId(int id) {
+        if (this.id == 0) {
             //id можно устанавливать только для новых task, для существующих менять id запрещено
             this.id = id;
         }
     }
 
-    public int getId(){
+    public int getId() {
         return id;
     }
 
@@ -34,7 +34,7 @@ public class Task {
         return status;
     }
 
-    public void setStatus(Status status){
+    public void setStatus(Status status) {
         this.status = status;
     }
 
@@ -46,7 +46,7 @@ public class Task {
         this.description = description;
     }
 
-    public Task clone(){
+    public Task clone() {
         Task taskClone = new Task(getName(), getDescription());
         taskClone.setId(getId());
         taskClone.setStatus(getStatus());

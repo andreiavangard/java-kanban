@@ -10,7 +10,6 @@ import task.Task;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class ManagerTest {
     static TaskManager taskManager;
@@ -94,14 +93,13 @@ class ManagerTest {
         int taskId = taskManager.addTask(task);
         //вызываем метод getTask чтобы таска попала в историю
         taskManager.getTask(taskId);
-        //получаем историю
-        List<Task> hystoriTask = taskManager.getHistory();
-        //защита от пустой истории, если история пустая то здесь упадем
-        assertTrue(hystoriTask.size()>0,"В истории нет задач");
-        //получаем последнюю таску из истории
-        Task savedHistoryTask = hystoriTask.get(hystoriTask.size()-1);
-        task.setName(task.getName()+"*");
+        //получаем задачу из истории
+        Task savedHistoryTask = taskManager.getTaskInHistoryById(taskId);
+        assertNotNull(savedHistoryTask, "Задача не записалась в историю");
+        task.setName(task.getName()+"**");
         //проверяем что новое имя не совпадает со старым
+        String n1 = task.getName();
+        String n2 = savedHistoryTask.getName();
         assertNotEquals(task.getName(), savedHistoryTask.getName(), "Задача из истории не сохранила версию.");
     }
 

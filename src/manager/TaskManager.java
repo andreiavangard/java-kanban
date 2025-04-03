@@ -53,4 +53,5 @@ public interface TaskManager {
 
     List<Task> getHistory();
 
+    Task getTaskInHistoryById(int id);
 }

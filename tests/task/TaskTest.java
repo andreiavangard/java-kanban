@@ -61,13 +61,12 @@ class TaskTest {
         assertEquals(task.getStatus(), Status.NEW, "Задача при создании не установила статус новый.");
     }
 
-    //3) проверьте, что задачи с заданным id и сгенерированным id не конфликтуют внутри менеджера;
     @Test
-    void tasksWithGivenIdAndGeneratedIdNotConflict(){
+    void assignedIdCannotBeRedefined(){
         Task task = new Task("Тестовая задача", "Описание тестовой задачи");
+        int id = taskManager.addTask(task);
         task.setId(-1);
-        taskManager.addTask(task);
-        assertTrue(task.getId()>=0,"Присвоенный ид не переопределяется в менеджере");
+        assertEquals(task.getId(), id,"Присвоенный ид не переопределяется в менеджере");
     }
 
 }

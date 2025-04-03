@@ -12,7 +12,10 @@ public class Task {
     }
 
     public  void setId(int id){
-        this.id = id;
+        if(this.id==0) {
+            //id можно устанавливать только для новых task, для существующих менять id запрещено
+            this.id = id;
+        }
     }
 
     public int getId(){

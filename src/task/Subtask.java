@@ -3,7 +3,7 @@ package task;
 public class Subtask extends Task {
     private int epicId;
 
-    public Subtask(String name, String description){
+    public Subtask(String name, String description) {
         super(name, description);
     }
 
@@ -15,7 +15,7 @@ public class Subtask extends Task {
         return epicId;
     }
 
-    public Subtask clone(){
+    public Subtask clone() {
         Subtask subtaskClone = new Subtask(getName(), getDescription());
         subtaskClone.setId(getId());
         subtaskClone.setStatus(getStatus());

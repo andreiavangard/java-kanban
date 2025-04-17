@@ -8,12 +8,14 @@ import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
 import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class EpicTest {
     static TaskManager taskManager;
+
     @BeforeEach
-    void beforeAll(){
+    void beforeAll() {
         taskManager = Managers.getDefault();
     }
 
@@ -49,24 +51,24 @@ class EpicTest {
 
     //тест проверяет, что экземпляры с одинковым id равны
     @Test
-    void instancesTaskEqualIfTheirIdIsEqual(){
+    void instancesTaskEqualIfTheirIdIsEqual() {
         Epic epic = new Epic("Тестовый эпик", "Описание тестового эпика");
         Epic cloneEpic = epic.clone();
-        cloneEpic.setName(cloneEpic.getName()+"*");
-        cloneEpic.setDescription(cloneEpic.getDescription()+"*");
+        cloneEpic.setName(cloneEpic.getName() + "*");
+        cloneEpic.setDescription(cloneEpic.getDescription() + "*");
         assertEquals(epic, cloneEpic, "Эпики c одинаковым id не совпадают.");
 
         Subtask subtask = new Subtask("Тестовая задача", "Описание тестовой задачи");
         Subtask cloneSubtask = subtask.clone();
-        cloneSubtask.setName(cloneSubtask.getName()+"*");
-        cloneSubtask.setDescription(cloneSubtask.getDescription()+"*");
+        cloneSubtask.setName(cloneSubtask.getName() + "*");
+        cloneSubtask.setDescription(cloneSubtask.getDescription() + "*");
         assertEquals(subtask, cloneSubtask, "Задачи c одинаковым id не совпадают.");
     }
 
     //4) создайте тест, в котором проверяется неизменность задачи (по всем полям) при добавлении задачи в менеджер
     //проверяется неизменность задачи (по всем полям) при добавлении задачи в менеджер
     @Test
-    void checkTheImmutabilityOfTaskWhenAddingToManager(){
+    void checkTheImmutabilityOfTaskWhenAddingToManager() {
         Epic epic = new Epic("Тестовый эпик", "Описание тестового эпика");
         int epicId = taskManager.addEpic(epic);
         Epic savedEpic = taskManager.getEpic(epicId);
@@ -84,7 +86,7 @@ class EpicTest {
 
     //для новой задачи правильно устанавливается статус
     @Test
-    void theStatusForNewOneIsSetCorrectly(){
+    void theStatusForNewOneIsSetCorrectly() {
         Epic epic = new Epic("Тестовый эпик", "Описание тестового эпика");
         taskManager.addEpic(epic);
         assertEquals(epic.getStatus(), Status.NEW, "Эпик при создании не установила статус новый.");
@@ -96,7 +98,7 @@ class EpicTest {
 
     //тест проверяет что у субтасок правильно заполняется ид
     @Test
-    void ownerIDCheck(){
+    void ownerIDCheck() {
         Epic epic = new Epic("Тестовый эпик", "Описание тестового эпика");
         taskManager.addEpic(epic);
         Subtask subtask1 = new Subtask("Тестовый субтаск1", "Описание тестового субтаска1");
@@ -105,14 +107,14 @@ class EpicTest {
         taskManager.addSubtask(subtask2, epic);
 
         HashMap<Integer, Subtask> subtasks = epic.getSubTasks();
-        for (Subtask subtask : subtasks.values()){
+        for (Subtask subtask : subtasks.values()) {
             assertEquals(subtask.getIdEpic(), epic.getId(), "У субтаска ид не совпадает с ид эпика.");
         }
     }
 
     //тест проверяет правильный расчет статуса
     @Test
-    void checkingEpicStatusSetting(){
+    void checkingEpicStatusSetting() {
         Epic epic = new Epic("Тестовый эпик", "Описание тестового эпика");
         taskManager.addEpic(epic);
         Subtask subtask1 = new Subtask("Тестовый субтаск1", "Описание тестового субтаска1");

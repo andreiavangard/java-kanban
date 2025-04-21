@@ -2,7 +2,6 @@ package task;
 
 import manager.Managers;
 import manager.TaskManager;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -10,16 +9,62 @@ import java.util.HashMap;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-class EpicTest {
+public class EpicTestFileBacked {
     static TaskManager taskManager;
 
     @BeforeEach
     void beforeAll() {
-        taskManager = Managers.getDefault();
+        taskManager = Managers.getFileBackedTaskManager();
     }
 
-    //2) проверьте, что InMemoryTaskManager действительно добавляет задачи разного типа и может найти их по id;
+    //тест проверяет правильность генерирования строки описания эпика
+    @Test
+    void toStringForEpicGeneratedCorrectly() {
+        Epic epic = new Epic("Тестовый эпик", "Описание тестового эпика");
+        taskManager.addEpic(epic);
+        assertEquals(epic.toString(), String.format("%s, EPIC, Тестовый эпик, NEW, Описание тестового эпика,", epic.getId()), "Неверно работает генерация описания задачи для epic");
+    }
+
+    //тест проверяет правильность генерирования строки описания субтаска
+    @Test
+    void toStringForSubtaskGeneratedCorrectly() {
+        Epic epic = new Epic("Тестовый эпик", "Описание тестового эпика");
+        taskManager.addEpic(epic);
+        Subtask subtask = new Subtask("Тестовый субтаск", "Описание тестового субтаска");
+        taskManager.addSubtask(subtask, epic);
+        assertEquals(subtask.toString(), String.format("%s, SUBTASK, Тестовый субтаск, NEW, Описание тестового субтаска, %s", subtask.getId(), epic.getId()), "Неверно работает генерация описания задачи для subtask");
+    }
+
+    //тест проверяет правильность восстановления эпика из строки
+    @Test
+    void correctnessEpickGenerationFromString() {
+        String strinfTaskOutFile = "1, EPIC, Тестовый эпик, NEW, Описание тестового эпика,";
+        Task epic = new Epic(strinfTaskOutFile);
+        assertEquals(epic.getId(), 1, "Неправильно восстановился id");
+        assertEquals(epic.getType(), TypeTask.EPIC, "Неправильно восстановился тип");
+        assertEquals(epic.getStatus(), Status.NEW, "Неправильно восстановился статус");
+        assertEquals(epic.getName(), "Тестовый эпик", "Неправильно восстановилось наименование");
+        assertEquals(epic.getDescription(), "Описание тестового эпика", "Неправильно восстановилось описание задачи");
+    }
+
+    //тест проверяет правильность восстановления субтаска из строки
+    @Test
+    void correctnessSubtaskGenerationFromString() {
+        Epic epic = new Epic("Тестовый эпик", "Описание тестового эпика");
+        taskManager.addEpic(epic);
+        String strinfTaskOutFile = "2, SUBTASK, Тестовый субтаск, NEW, Описание тестового субтаска, 1";
+        Subtask subtask = new Subtask(strinfTaskOutFile);
+        assertEquals(subtask.getId(), 2, "Неправильно восстановился id субтаска");
+        assertEquals(subtask.getIdEpic(), 1, "Неправильно восстановился id эпика");
+        assertEquals(subtask.getType(), TypeTask.SUBTASK, "Неправильно восстановился тип");
+        assertEquals(subtask.getStatus(), Status.NEW, "Неправильно восстановился статус");
+        assertEquals(subtask.getName(), "Тестовый субтаск", "Неправильно восстановилось наименование");
+        assertEquals(subtask.getDescription(), "Описание тестового субтаска", "Неправильно восстановилось описание задачи");
+    }
+
+    //тест проверяет, что InMemoryTaskManager действительно добавляет задачи разного типа и может найти их по id;
     @Test
     void addNewEpicSubtask() {
         //Эпики
@@ -65,8 +110,7 @@ class EpicTest {
         assertEquals(subtask, cloneSubtask, "Задачи c одинаковым id не совпадают.");
     }
 
-    //4) создайте тест, в котором проверяется неизменность задачи (по всем полям) при добавлении задачи в менеджер
-    //проверяется неизменность задачи (по всем полям) при добавлении задачи в менеджер
+    //тест проверяет неизменность задачи (по всем полям) при добавлении задачи в менеджер
     @Test
     void checkTheImmutabilityOfTaskWhenAddingToManager() {
         Epic epic = new Epic("Тестовый эпик", "Описание тестового эпика");
@@ -84,7 +128,7 @@ class EpicTest {
         assertEquals(subtask.getDescription(), savedSubtask.getDescription(), "Не совпадает описание");
     }
 
-    //для новой задачи правильно устанавливается статус
+    //тест проверяет, что для новой задачи правильно устанавливается статус
     @Test
     void theStatusForNewOneIsSetCorrectly() {
         Epic epic = new Epic("Тестовый эпик", "Описание тестового эпика");
@@ -143,5 +187,4 @@ class EpicTest {
         assertEquals(epic.getStatus(), Status.NEW, "Эпик неправильно возобновил статус NEW.");
 
     }
-
 }

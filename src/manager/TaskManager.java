@@ -4,6 +4,7 @@ import task.Epic;
 import task.Subtask;
 import task.Task;
 
+import java.io.File;
 import java.util.List;
 
 
@@ -55,4 +56,8 @@ public interface TaskManager {
     List<Task> getHistory();
 
     Task getTaskInHistoryById(int id);
+
+    //вынужденный метод, для реализации требований тестирования записи чтения в пустой файл
+    //имеет смысл только для FileBackedTaskManager
+    File getFile();
 }

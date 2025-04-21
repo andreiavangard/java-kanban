@@ -3,12 +3,12 @@ package manager;
 import task.Task;
 
 public class Node {
-    public Task data;
+    public Task task;
     public Node next;
     public Node prev;
 
-    public Node(Task data) {
-        this.data = data;
+    public Node(Task task) {
+        this.task = task;
         this.prev = prev;
     }
 
@@ -20,8 +20,8 @@ public class Node {
         this.prev = prev;
     }
 
-    public Task getData() {
-        return data;
+    public Task getTask() {
+        return task;
     }
 
     public Node getNext() {

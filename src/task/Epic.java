@@ -9,6 +9,10 @@ public class Epic extends Task {
         super(name, description);
     }
 
+    public Epic(String epicStructure) {
+        super(epicStructure);
+    }
+
     public void setSubtask(Subtask subTasks, int idSubTasks) {
         this.subTasks.put(idSubTasks, subTasks);
     }
@@ -34,17 +38,6 @@ public class Epic extends Task {
         epicClone.setId(getId());
         epicClone.setStatus(getStatus());
         return epicClone;
-    }
-
-    @Override
-    public String toString() {
-        return "task.Epic{" +
-                "id=" + super.getId() +
-                ", name='" + super.getName() + '\'' +
-                ", description='" + super.getDescription() + '\'' +
-                ", status=" + super.getStatus() +
-                ", subTasks=" + subTasks.toString() +
-                '}';
     }
 
 }

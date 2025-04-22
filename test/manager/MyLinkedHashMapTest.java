@@ -6,7 +6,7 @@ import task.Task;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class myLinkedHashMapTest {
+public class MyLinkedHashMapTest {
     static InMemoryHistoryManager historyManager;
     static Task task1;
     static Task task2;

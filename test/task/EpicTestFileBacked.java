@@ -1,10 +1,10 @@
 package task;
 
-import manager.Managers;
-import manager.TaskManager;
-import org.junit.jupiter.api.BeforeEach;
+import manager.FileBackedTaskManager;
 import org.junit.jupiter.api.Test;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 
@@ -12,16 +12,12 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class EpicTestFileBacked {
-    static TaskManager taskManager;
-
-    @BeforeEach
-    void beforeAll() {
-        taskManager = Managers.getFileBackedTaskManager();
-    }
 
     //тест проверяет правильность генерирования строки описания эпика
     @Test
-    void toStringForEpicGeneratedCorrectly() {
+    void toStringForEpicGeneratedCorrectly() throws IOException {
+        File tempFile = File.createTempFile("fm_", "csv");
+        FileBackedTaskManager taskManager = new FileBackedTaskManager(tempFile);
         Epic epic = new Epic("Тестовый эпик", "Описание тестового эпика");
         taskManager.addEpic(epic);
         assertEquals(epic.toString(), String.format("%s, EPIC, Тестовый эпик, NEW, Описание тестового эпика,", epic.getId()), "Неверно работает генерация описания задачи для epic");
@@ -29,7 +25,9 @@ public class EpicTestFileBacked {
 
     //тест проверяет правильность генерирования строки описания субтаска
     @Test
-    void toStringForSubtaskGeneratedCorrectly() {
+    void toStringForSubtaskGeneratedCorrectly() throws IOException {
+        File tempFile = File.createTempFile("fm_", "csv");
+        FileBackedTaskManager taskManager = new FileBackedTaskManager(tempFile);
         Epic epic = new Epic("Тестовый эпик", "Описание тестового эпика");
         taskManager.addEpic(epic);
         Subtask subtask = new Subtask("Тестовый субтаск", "Описание тестового субтаска");
@@ -43,7 +41,7 @@ public class EpicTestFileBacked {
         String strinfTaskOutFile = "1, EPIC, Тестовый эпик, NEW, Описание тестового эпика,";
         Task epic = new Epic(strinfTaskOutFile);
         assertEquals(epic.getId(), 1, "Неправильно восстановился id");
-        assertEquals(epic.getType(), TypeTask.EPIC, "Неправильно восстановился тип");
+        assertEquals(epic.getType(), TaskType.EPIC, "Неправильно восстановился тип");
         assertEquals(epic.getStatus(), Status.NEW, "Неправильно восстановился статус");
         assertEquals(epic.getName(), "Тестовый эпик", "Неправильно восстановилось наименование");
         assertEquals(epic.getDescription(), "Описание тестового эпика", "Неправильно восстановилось описание задачи");
@@ -51,14 +49,16 @@ public class EpicTestFileBacked {
 
     //тест проверяет правильность восстановления субтаска из строки
     @Test
-    void correctnessSubtaskGenerationFromString() {
+    void correctnessSubtaskGenerationFromString() throws IOException {
+        File tempFile = File.createTempFile("fm_", "csv");
+        FileBackedTaskManager taskManager = new FileBackedTaskManager(tempFile);
         Epic epic = new Epic("Тестовый эпик", "Описание тестового эпика");
         taskManager.addEpic(epic);
         String strinfTaskOutFile = "2, SUBTASK, Тестовый субтаск, NEW, Описание тестового субтаска, 1";
         Subtask subtask = new Subtask(strinfTaskOutFile);
         assertEquals(subtask.getId(), 2, "Неправильно восстановился id субтаска");
         assertEquals(subtask.getIdEpic(), 1, "Неправильно восстановился id эпика");
-        assertEquals(subtask.getType(), TypeTask.SUBTASK, "Неправильно восстановился тип");
+        assertEquals(subtask.getType(), TaskType.SUBTASK, "Неправильно восстановился тип");
         assertEquals(subtask.getStatus(), Status.NEW, "Неправильно восстановился статус");
         assertEquals(subtask.getName(), "Тестовый субтаск", "Неправильно восстановилось наименование");
         assertEquals(subtask.getDescription(), "Описание тестового субтаска", "Неправильно восстановилось описание задачи");
@@ -66,7 +66,9 @@ public class EpicTestFileBacked {
 
     //тест проверяет, что InMemoryTaskManager действительно добавляет задачи разного типа и может найти их по id;
     @Test
-    void addNewEpicSubtask() {
+    void addNewEpicSubtask() throws IOException {
+        File tempFile = File.createTempFile("fm_", "csv");
+        FileBackedTaskManager taskManager = new FileBackedTaskManager(tempFile);
         //Эпики
         Epic epic = new Epic("Тестовый эпик", "Описание тестового эпика");
         int epicId = taskManager.addEpic(epic);
@@ -112,7 +114,9 @@ public class EpicTestFileBacked {
 
     //тест проверяет неизменность задачи (по всем полям) при добавлении задачи в менеджер
     @Test
-    void checkTheImmutabilityOfTaskWhenAddingToManager() {
+    void checkTheImmutabilityOfTaskWhenAddingToManager() throws IOException {
+        File tempFile = File.createTempFile("fm_", "csv");
+        FileBackedTaskManager taskManager = new FileBackedTaskManager(tempFile);
         Epic epic = new Epic("Тестовый эпик", "Описание тестового эпика");
         int epicId = taskManager.addEpic(epic);
         Epic savedEpic = taskManager.getEpic(epicId);
@@ -130,7 +134,9 @@ public class EpicTestFileBacked {
 
     //тест проверяет, что для новой задачи правильно устанавливается статус
     @Test
-    void theStatusForNewOneIsSetCorrectly() {
+    void theStatusForNewOneIsSetCorrectly() throws IOException {
+        File tempFile = File.createTempFile("fm_", "csv");
+        FileBackedTaskManager taskManager = new FileBackedTaskManager(tempFile);
         Epic epic = new Epic("Тестовый эпик", "Описание тестового эпика");
         taskManager.addEpic(epic);
         assertEquals(epic.getStatus(), Status.NEW, "Эпик при создании не установила статус новый.");
@@ -142,7 +148,9 @@ public class EpicTestFileBacked {
 
     //тест проверяет что у субтасок правильно заполняется ид
     @Test
-    void ownerIDCheck() {
+    void ownerIDCheck() throws IOException {
+        File tempFile = File.createTempFile("fm_", "csv");
+        FileBackedTaskManager taskManager = new FileBackedTaskManager(tempFile);
         Epic epic = new Epic("Тестовый эпик", "Описание тестового эпика");
         taskManager.addEpic(epic);
         Subtask subtask1 = new Subtask("Тестовый субтаск1", "Описание тестового субтаска1");
@@ -158,7 +166,9 @@ public class EpicTestFileBacked {
 
     //тест проверяет правильный расчет статуса
     @Test
-    void checkingEpicStatusSetting() {
+    void checkingEpicStatusSetting() throws IOException {
+        File tempFile = File.createTempFile("fm_", "csv");
+        FileBackedTaskManager taskManager = new FileBackedTaskManager(tempFile);
         Epic epic = new Epic("Тестовый эпик", "Описание тестового эпика");
         taskManager.addEpic(epic);
         Subtask subtask1 = new Subtask("Тестовый субтаск1", "Описание тестового субтаска1");

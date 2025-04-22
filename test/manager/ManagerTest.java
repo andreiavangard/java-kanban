@@ -6,6 +6,8 @@ import task.Epic;
 import task.Subtask;
 import task.Task;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -17,7 +19,6 @@ class ManagerTest {
     @BeforeEach
     void beforeAll() {
         taskInMemoryManager = Managers.getDefault();
-        taskFileManager = Managers.getFileBackedTaskManager();
     }
 
     //тест проверяет что утилитарный класс всегда возвращает проинициализированные и готовые к работе экземпляры менеджеров;
@@ -31,8 +32,9 @@ class ManagerTest {
     }
 
     @Test
-    void testFileManagers() {
-        TaskManager taskFileManager = Managers.getFileBackedTaskManager();
+    void testFileManagers() throws IOException {
+        File temp = File.createTempFile("fm_", "csv");
+        FileBackedTaskManager taskFileManager = new FileBackedTaskManager(temp);
         assertNotNull(taskFileManager, "taskManager не проинициализирован явно не готов.");
     }
 

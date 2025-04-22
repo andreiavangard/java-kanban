@@ -1,11 +1,13 @@
 package task;
 
+import task.Status;
+
 public class Task {
     private int id;
     private String name;
     private String description;
     private Status status;
-    private TypeTask type;
+    private TaskType type;
 
     public Task(String name, String description) {
         this.name = name;
@@ -16,23 +18,9 @@ public class Task {
         String[] mTask = taskStructure.split(",");
         this.name = mTask[2].trim();
         this.description = mTask[4].trim();
-        this.type = getTypeFromString(mTask[1].trim());
+        this.type = TaskType.getTypeFromString(mTask[1].trim());
         this.id = Integer.parseInt(mTask[0].trim());
-        this.status = getStatusFromString(mTask[3].trim());
-    }
-
-    public static TypeTask getTypeFromString(String typeString) {
-        if (typeString.equals("TASK")) {
-            return TypeTask.TASK;
-        } else if (typeString.equals("EPIC")) {
-            return TypeTask.EPIC;
-        } else {
-            return TypeTask.SUBTASK;
-        }
-    }
-
-    public static String getFileHeader() {
-        return "id, type, name, status, description, epic";
+        this.status = Status.getStatusFromString(mTask[3].trim());
     }
 
     public void setId(int id) {
@@ -54,7 +42,7 @@ public class Task {
         return description;
     }
 
-    public TypeTask getType() {
+    public TaskType getType() {
         return type;
     }
 
@@ -74,7 +62,7 @@ public class Task {
         this.description = description;
     }
 
-    public void setType(TypeTask type) {
+    public void setType(TaskType type) {
         this.type = type;
     }
 
@@ -84,16 +72,6 @@ public class Task {
         taskClone.setType(getType());
         taskClone.setStatus(getStatus());
         return taskClone;
-    }
-
-    public Status getStatusFromString(String statusString) {
-        if (statusString.equals("NEW")) {
-            return Status.NEW;
-        } else if (statusString.equals("IN_PROGRESS")) {
-            return Status.IN_PROGRESS;
-        } else {
-            return Status.DONE;
-        }
     }
 
     @Override

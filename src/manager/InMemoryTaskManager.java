@@ -29,7 +29,7 @@ public class InMemoryTaskManager implements TaskManager {
     public int addTask(Task taskAdd) {
         int id = globalTaskId++;
         taskAdd.setId(id);
-        taskAdd.setType(TypeTask.TASK);
+        taskAdd.setType(TaskType.TASK);
         taskAdd.setStatus(Status.NEW);
         tasks.put(id, taskAdd);
         return id;
@@ -69,7 +69,7 @@ public class InMemoryTaskManager implements TaskManager {
     public int addEpic(Epic epic) {
         int id = globalTaskId++;
         epic.setId(id);
-        epic.setType(TypeTask.EPIC);
+        epic.setType(TaskType.EPIC);
         epic.setStatus(Status.NEW);
         epics.put(id, epic);
         return id;
@@ -125,7 +125,7 @@ public class InMemoryTaskManager implements TaskManager {
     public int addSubtask(Subtask subtask, Epic epic) {
         int id = globalTaskId++;
         subtask.setId(id);
-        subtask.setType(TypeTask.SUBTASK);
+        subtask.setType(TaskType.SUBTASK);
         subtask.setStatus(Status.NEW);
         int idEpic = epic.getId();
         subtask.setIdEpic(idEpic);
@@ -219,11 +219,6 @@ public class InMemoryTaskManager implements TaskManager {
             historyManager.add(epicForHistory.clone());
         }
         return new ArrayList<Epic>(epics.values());
-    }
-
-    @Override
-    public File getFile() {
-        return null;
     }
 
     protected Map<Integer, Task> getMapTasks() {

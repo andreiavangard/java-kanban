@@ -3,6 +3,7 @@ package manager;
 import task.Epic;
 import task.Subtask;
 import task.Task;
+import task.TaskType;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -20,7 +21,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         this.file = file;
     }
 
-    public static TaskManager loadFromFile(File file) {
+    public static FileBackedTaskManager loadFromFile(File file) {
         FileBackedTaskManager fileBackedTaskManager = new FileBackedTaskManager(file);
         try (BufferedReader br = new BufferedReader(new FileReader(file.toString()))) {
             while (br.ready()) {
@@ -28,7 +29,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                 String[] mLine = line.split(",");
                 if (!mLine[0].trim().equals("id")) {
                     int id = Integer.parseInt(mLine[0].trim());
-                    switch (Task.getTypeFromString(mLine[1].trim())) {
+                    switch (TaskType.getTypeFromString(mLine[1].trim())) {
                         case TASK:
                             Task task = new Task(line);
                             fileBackedTaskManager.setTaskInTasks(id, task);
@@ -51,10 +52,13 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         return fileBackedTaskManager;
     }
 
+    public static String getFileHeader() {
+        return "id, type, name, status, description, epic";
+    }
 
-    private void save() {
+    public void save() {
         try (FileWriter fileWriter = new FileWriter(file, StandardCharsets.UTF_8)) {
-            fileWriter.write(Task.getFileHeader() + "\n");
+            fileWriter.write(getFileHeader() + "\n");
             for (Task task : getMapTasks().values()) {
                 fileWriter.write(task.toString() + "\n");
             }
@@ -214,11 +218,5 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         ArrayList<Epic> epics = super.getEpics();
         return epics;
     }
-
-    @Override
-    public File getFile() {
-        return file;
-    }
-
 
 }

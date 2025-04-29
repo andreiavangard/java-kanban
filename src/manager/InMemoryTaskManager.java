@@ -1,22 +1,18 @@
 package manager;
 
-import task.Epic;
-import task.Status;
-import task.Subtask;
-import task.Task;
+import task.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
 public class InMemoryTaskManager implements TaskManager {
     private int globalTaskId = 1;
     private Map<Integer, Task> tasks = new HashMap<>();
     private Map<Integer, Subtask> subTasks = new HashMap<>();
     private Map<Integer, Epic> epics = new HashMap<>();
-    private HistoryManager historyManager = Managers.getDefaultHistory();
+    protected HistoryManager historyManager = Managers.getDefaultHistory();
 
     @Override
     public List<Task> getHistory() {
@@ -32,6 +28,7 @@ public class InMemoryTaskManager implements TaskManager {
     public int addTask(Task taskAdd) {
         int id = globalTaskId++;
         taskAdd.setId(id);
+        taskAdd.setType(TaskType.TASK);
         taskAdd.setStatus(Status.NEW);
         tasks.put(id, taskAdd);
         return id;
@@ -71,6 +68,7 @@ public class InMemoryTaskManager implements TaskManager {
     public int addEpic(Epic epic) {
         int id = globalTaskId++;
         epic.setId(id);
+        epic.setType(TaskType.EPIC);
         epic.setStatus(Status.NEW);
         epics.put(id, epic);
         return id;
@@ -126,6 +124,7 @@ public class InMemoryTaskManager implements TaskManager {
     public int addSubtask(Subtask subtask, Epic epic) {
         int id = globalTaskId++;
         subtask.setId(id);
+        subtask.setType(TaskType.SUBTASK);
         subtask.setStatus(Status.NEW);
         int idEpic = epic.getId();
         subtask.setIdEpic(idEpic);
@@ -219,6 +218,30 @@ public class InMemoryTaskManager implements TaskManager {
             historyManager.add(epicForHistory.clone());
         }
         return new ArrayList<Epic>(epics.values());
+    }
+
+    protected Map<Integer, Task> getMapTasks() {
+        return tasks;
+    }
+
+    protected Map<Integer, Subtask> getMapMapSubtasks() {
+        return subTasks;
+    }
+
+    protected Map<Integer, Epic> getMapEpics() {
+        return epics;
+    }
+
+    protected void setTaskInTasks(int id, Task task) {
+        tasks.put(id, task);
+    }
+
+    protected void setSubtaskInSubtasks(int id, Subtask subtask) {
+        subTasks.put(id, subtask);
+    }
+
+    protected void setEpicInEpics(int id, Epic epic) {
+        epics.put(id, epic);
     }
 
     private Status updateEpicStatus(Epic epic) {

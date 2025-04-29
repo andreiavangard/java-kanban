@@ -1,14 +1,26 @@
 package task;
 
+import task.Status;
+
 public class Task {
     private int id;
     private String name;
     private String description;
     private Status status;
+    private TaskType type;
 
     public Task(String name, String description) {
         this.name = name;
         this.description = description;
+    }
+
+    public Task(String taskStructure) {
+        String[] mTask = taskStructure.split(",");
+        this.name = mTask[2].trim();
+        this.description = mTask[4].trim();
+        this.type = TaskType.getTypeFromString(mTask[1].trim());
+        this.id = Integer.parseInt(mTask[0].trim());
+        this.status = Status.getStatusFromString(mTask[3].trim());
     }
 
     public void setId(int id) {
@@ -30,6 +42,10 @@ public class Task {
         return description;
     }
 
+    public TaskType getType() {
+        return type;
+    }
+
     public Status getStatus() {
         return status;
     }
@@ -46,9 +62,14 @@ public class Task {
         this.description = description;
     }
 
+    public void setType(TaskType type) {
+        this.type = type;
+    }
+
     public Task clone() {
         Task taskClone = new Task(getName(), getDescription());
         taskClone.setId(getId());
+        taskClone.setType(getType());
         taskClone.setStatus(getStatus());
         return taskClone;
     }
@@ -68,11 +89,8 @@ public class Task {
 
     @Override
     public String toString() {
-        return "task.Task{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", status=" + status +
-                '}';
+        return String.format("%s, %s, %s, %s, %s,", id, type, name, status, description);
     }
+
+
 }

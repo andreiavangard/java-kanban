@@ -8,15 +8,15 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class TaskTest {
+class TaskTestInMemory {
     static TaskManager taskManager;
 
     @BeforeEach
     void beforeAll() {
         taskManager = Managers.getDefault();
     }
-
 
     //2) проверьте, что InMemoryTaskManager действительно добавляет задачи разного типа и может найти их по id;
     @Test
@@ -44,8 +44,7 @@ class TaskTest {
         assertEquals(task, cloneTask, "Задачи c одинаковым id не совпадают.");
     }
 
-    //4) создайте тест, в котором проверяется неизменность задачи (по всем полям) при добавлении задачи в менеджер
-    //проверяется неизменность задачи (по всем полям) при добавлении задачи в менеджер
+    //тест проверяет неизменность задачи (по всем полям) при добавлении задачи в менеджер
     @Test
     void checkTheImmutabilityOfTaskWhenAddingToManager() {
         Task task = new Task("Тестовая задача", "Описание тестовой задачи");

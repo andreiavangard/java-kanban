@@ -7,6 +7,12 @@ public class Subtask extends Task {
         super(name, description);
     }
 
+    public Subtask(String subtaskStructure) {
+        super(subtaskStructure);
+        String[] mTask = subtaskStructure.split(",");
+        epicId = Integer.parseInt(mTask[5].trim());
+    }
+
     public void setIdEpic(int idEpic) {
         this.epicId = idEpic;
     }
@@ -24,13 +30,9 @@ public class Subtask extends Task {
 
     @Override
     public String toString() {
-        return "SubTask{" +
-                "id=" + super.getId() + '\'' +
-                ", idEpic=" + epicId + '\'' +
-                ", name='" + super.getName() + '\'' +
-                ", description='" + super.getDescription() + '\'' +
-                ", status=" + super.getStatus() +
-                '}';
+        //к toString super добавить epicId
+        String toStringSuper = super.toString();
+        return String.format("%s %s", toStringSuper, epicId);
     }
 
 }

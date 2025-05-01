@@ -51,7 +51,7 @@ public class Epic extends Task {
         return epicClone;
     }
 
-    public void UpdateDateTimeDuration() {
+    public void updateDateTimeDuration() {
         if (!subTasks.isEmpty()) {
             //min
             Optional<Subtask> minTimeSubtask = subTasks.values().stream()

@@ -102,7 +102,7 @@ public class InMemoryTaskManager implements TaskManager {
         }
         Status newStatusEpic = updateEpicStatus(epic);
         epic.setStatus(newStatusEpic);
-        epic.UpdateDateTimeDuration();
+        epic.updateDateTimeDuration();
     }
 
     @Override
@@ -162,7 +162,7 @@ public class InMemoryTaskManager implements TaskManager {
         subTasks.put(subtask.getId(), subtask);
         Status newStatusEpic = updateEpicStatus(epic);
         epic.setStatus(newStatusEpic);
-        epic.UpdateDateTimeDuration();
+        epic.updateDateTimeDuration();
         if (!isIntersectionsTaskInTasksOfPriority(subtask)) {
             addTaskIntasksOfPriority(subtask);
         } else {
@@ -178,7 +178,7 @@ public class InMemoryTaskManager implements TaskManager {
         subTasks.put(subtask.getId(), subtask);
         Status newStatusEpic = updateEpicStatus(epic);
         epic.setStatus(newStatusEpic);
-        epic.UpdateDateTimeDuration();
+        epic.updateDateTimeDuration();
         if (!isIntersectionsTaskInTasksOfPriority(subtask)) {
             addTaskIntasksOfPriority(subtask);
         } else {
@@ -193,7 +193,7 @@ public class InMemoryTaskManager implements TaskManager {
         historyManager.remove(subtask.getId());
         Status newStatusEpic = updateEpicStatus(epic);
         epic.setStatus(newStatusEpic);
-        epic.UpdateDateTimeDuration();
+        epic.updateDateTimeDuration();
         deleteTaskInTasksOfPriority(subtask);
     }
 
@@ -237,7 +237,7 @@ public class InMemoryTaskManager implements TaskManager {
                 );
         Status newStatusEpic = updateEpicStatus(epic);
         epic.setStatus(newStatusEpic);
-        epic.UpdateDateTimeDuration();
+        epic.updateDateTimeDuration();
     }
 
     @Override

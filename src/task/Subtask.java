@@ -1,16 +1,19 @@
 package task;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+
 public class Subtask extends Task {
     private int epicId;
 
-    public Subtask(String name, String description) {
-        super(name, description);
+    public Subtask(String name, String description, LocalDateTime startTime, int durationInMinutes) {
+        super(name, description, startTime, durationInMinutes);
     }
 
     public Subtask(String subtaskStructure) {
         super(subtaskStructure);
         String[] mTask = subtaskStructure.split(",");
-        epicId = Integer.parseInt(mTask[5].trim());
+        epicId = Integer.parseInt(mTask[7].trim());
     }
 
     public void setIdEpic(int idEpic) {
@@ -22,7 +25,7 @@ public class Subtask extends Task {
     }
 
     public Subtask clone() {
-        Subtask subtaskClone = new Subtask(getName(), getDescription());
+        Subtask subtaskClone = new Subtask(getName(), getDescription(), getStartTime(), getDurationInMinutes());
         subtaskClone.setId(getId());
         subtaskClone.setStatus(getStatus());
         return subtaskClone;

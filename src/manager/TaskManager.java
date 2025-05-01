@@ -56,4 +56,5 @@ public interface TaskManager {
 
     Task getTaskInHistoryById(int id);
 
+    Task[] getPrioritizedTasks();
 }

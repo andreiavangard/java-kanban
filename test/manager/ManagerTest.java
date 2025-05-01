@@ -8,13 +8,15 @@ import task.Task;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class ManagerTest {
     static TaskManager taskInMemoryManager;
-    static TaskManager taskFileManager;
+    protected LocalDateTime currentDate = LocalDateTime.now();
+    protected int duration1m = 1;
 
     @BeforeEach
     void beforeAll() {
@@ -41,7 +43,7 @@ class ManagerTest {
     @Test
     void testHistory() {
         TaskManager taskManager = Managers.getDefault();
-        Task task = new Task("Тестовая задача", "Описание тестовой задачи");
+        Task task = new Task("Тестовая задача", "Описание тестовой задачи", currentDate, duration1m);
         int taskId = taskManager.addTask(task);
         taskManager.getTask(taskId);
 
@@ -49,7 +51,7 @@ class ManagerTest {
         int epicId = taskManager.addEpic(epic);
         taskManager.getEpic(epicId);
 
-        Subtask subtask = new Subtask("Test addNewSubtask", "Test addNewSubtask description");
+        Subtask subtask = new Subtask("Test addNewSubtask", "Test addNewSubtask description", currentDate.plusMinutes(10), duration1m);
         int subtaskId = taskManager.addSubtask(subtask, epic);
         taskManager.getSubtask(subtaskId);
 
@@ -78,7 +80,7 @@ class ManagerTest {
         assertNotEquals(epic.getName(), savedHistoryEpic.getName(), "Эпик из истории не сохранила версию.");
 
         //создаем субтаску помещаем ее в переменную task
-        Subtask subtask = new Subtask("Тестовый субтаск", "Описание тестового субтаска");
+        Subtask subtask = new Subtask("Тестовый субтаск", "Описание тестового субтаска", currentDate, duration1m);
         int subtaskId = taskInMemoryManager.addSubtask(subtask, epic);
         //вызываем метод getSubtask чтобы субтаска попала в историю
         taskInMemoryManager.getSubtask(subtaskId);
@@ -97,7 +99,7 @@ class ManagerTest {
     @Test
     void taskAdedToTheHistoryManagerSavesPreviousVersionOfTaskAndData() {
         //создаем таску помещаем ее в переменную task
-        Task task = new Task("Тестовая задача", "Описание тестовой задачи");
+        Task task = new Task("Тестовая задача", "Описание тестовой задачи", currentDate, duration1m);
         int taskId = taskInMemoryManager.addTask(task);
         //вызываем метод getTask чтобы таска попала в историю
         taskInMemoryManager.getTask(taskId);

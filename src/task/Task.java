@@ -1,7 +1,5 @@
 package task;
 
-import task.Status;
-
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -135,12 +133,12 @@ public class Task {
         return String.format("%s, %s, %s, %s, %s, %s, %s,", id, type, name, status, description, startTimeString, durationTask);
     }
 
-    public static String getStringDateTime(LocalDateTime DateTime) {
-        return DateTime.format(formatterDataTimeTask);
+    public static String getStringDateTime(LocalDateTime dateTime) {
+        return dateTime.format(formatterDataTimeTask);
     }
 
-    public static LocalDateTime getDateTimeOfString(String DateTimeString) {
-        return LocalDateTime.parse(DateTimeString, formatterDataTimeTask);
+    public static LocalDateTime getDateTimeOfString(String dateTimeString) {
+        return LocalDateTime.parse(dateTimeString, formatterDataTimeTask);
     }
 
 

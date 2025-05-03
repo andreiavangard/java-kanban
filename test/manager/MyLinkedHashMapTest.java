@@ -4,6 +4,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import task.Task;
 
+import java.time.LocalDateTime;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class MyLinkedHashMapTest {
@@ -11,16 +13,18 @@ public class MyLinkedHashMapTest {
     static Task task1;
     static Task task2;
     static Task task3;
+    protected LocalDateTime currentDate = LocalDateTime.now();
+    protected int duration1m = 1;
 
     @BeforeEach
     void beforeAll() {
         historyManager = new InMemoryHistoryManager();
         TaskManager taskManager = Managers.getDefault();
-        task1 = new Task("Тестовая задача1", "Описание тестовой задачи1");
+        task1 = new Task("Тестовая задача1", "Описание тестовой задачи1", currentDate, duration1m);
         taskManager.addTask(task1);
-        task2 = new Task("Тестовая задача2", "Описание тестовой задачи2");
+        task2 = new Task("Тестовая задача2", "Описание тестовой задачи2", currentDate.plusMinutes(10), duration1m);
         taskManager.addTask(task2);
-        task3 = new Task("Тестовая задача3", "Описание тестовой задачи3");
+        task3 = new Task("Тестовая задача3", "Описание тестовой задачи3", currentDate.plusMinutes(20), duration1m);
         taskManager.addTask(task3);
     }
 

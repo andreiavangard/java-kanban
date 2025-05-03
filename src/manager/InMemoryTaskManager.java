@@ -2,10 +2,7 @@ package manager;
 
 import task.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class InMemoryTaskManager implements TaskManager {
     private int globalTaskId = 1;
@@ -13,6 +10,7 @@ public class InMemoryTaskManager implements TaskManager {
     private Map<Integer, Subtask> subTasks = new HashMap<>();
     private Map<Integer, Epic> epics = new HashMap<>();
     protected HistoryManager historyManager = Managers.getDefaultHistory();
+    private final Set<Task> tasksOfPriority = new TreeSet<>(Comparator.comparing(Task::getStartTime));
 
     @Override
     public List<Task> getHistory() {
@@ -25,12 +23,22 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
+    public Task[] getPrioritizedTasks() {
+        return tasksOfPriority.stream().toArray(Task[]::new);
+    }
+
+    @Override
     public int addTask(Task taskAdd) {
         int id = globalTaskId++;
         taskAdd.setId(id);
         taskAdd.setType(TaskType.TASK);
         taskAdd.setStatus(Status.NEW);
         tasks.put(id, taskAdd);
+        if (!isIntersectionsTaskInTasksOfPriority(taskAdd)) {
+            addTaskIntasksOfPriority(taskAdd);
+        } else {
+            throw new IllegalArgumentException(String.format("Задача %s пересекается с одной из существующих задач", taskAdd.toString()));
+        }
         return id;
     }
 
@@ -39,12 +47,20 @@ public class InMemoryTaskManager implements TaskManager {
         if (tasks.get(taskUpdate.getId()) != null) {
             tasks.put(taskUpdate.getId(), taskUpdate);
         }
+        deleteTaskInTasksOfPriority(taskUpdate);
+        if (!isIntersectionsTaskInTasksOfPriority(taskUpdate)) {
+            addTaskIntasksOfPriority(taskUpdate);
+        } else {
+            throw new IllegalArgumentException(String.format("Задача %s пересекается с одной из существующих задач", taskUpdate.toString()));
+        }
+
     }
 
     @Override
     public void deleteTask(Task taskDelete) {
         tasks.remove(taskDelete.getId());
         historyManager.remove(taskDelete.getId());
+        deleteTaskInTasksOfPriority(taskDelete);
     }
 
     @Override
@@ -54,6 +70,11 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void clearTask() {
+        tasks.entrySet().stream()
+                .forEach(
+                        entry -> deleteTaskInTasksOfPriority(entry.getValue())
+                );
+
         tasks.clear();
     }
 
@@ -81,15 +102,20 @@ public class InMemoryTaskManager implements TaskManager {
         }
         Status newStatusEpic = updateEpicStatus(epic);
         epic.setStatus(newStatusEpic);
+        epic.updateDateTimeDuration();
     }
 
     @Override
     public void deleteEpic(Epic epic) {
         HashMap<Integer, Subtask> subTasksEpic = epic.getSubTasks();
-        for (int key : subTasksEpic.keySet()) {
-            subTasks.remove(key);
-            historyManager.remove(key);
-        }
+        subTasksEpic.entrySet().stream()
+                .forEach(
+                        entry -> {
+                            subTasks.remove(entry.getKey());
+                            historyManager.remove(entry.getKey());
+                            deleteTaskInTasksOfPriority(entry.getValue());
+                        }
+                );
         epics.remove(epic.getId());
         historyManager.remove(epic.getId());
     }
@@ -105,9 +131,13 @@ public class InMemoryTaskManager implements TaskManager {
         for (int key : epics.keySet()) {
             historyManager.remove(key);
         }
-        for (int key : subTasks.keySet()) {
-            historyManager.remove(key);
-        }
+        subTasks.entrySet().stream()
+                .forEach(
+                        entry -> {
+                            historyManager.remove(entry.getKey());
+                            deleteTaskInTasksOfPriority(entry.getValue());
+                        }
+                );
         //очистить таски
         epics.clear();
         subTasks.clear();
@@ -132,15 +162,28 @@ public class InMemoryTaskManager implements TaskManager {
         subTasks.put(subtask.getId(), subtask);
         Status newStatusEpic = updateEpicStatus(epic);
         epic.setStatus(newStatusEpic);
+        epic.updateDateTimeDuration();
+        if (!isIntersectionsTaskInTasksOfPriority(subtask)) {
+            addTaskIntasksOfPriority(subtask);
+        } else {
+            throw new IllegalArgumentException(String.format("Задача %s пересекается с одной из существующих задач", subtask.toString()));
+        }
         return id;
     }
 
     @Override
     public void updateSubtask(Subtask subtask, Epic epic) {
+        deleteTaskInTasksOfPriority(subtask);
         epic.setSubtask(subtask, subtask.getId());
         subTasks.put(subtask.getId(), subtask);
         Status newStatusEpic = updateEpicStatus(epic);
         epic.setStatus(newStatusEpic);
+        epic.updateDateTimeDuration();
+        if (!isIntersectionsTaskInTasksOfPriority(subtask)) {
+            addTaskIntasksOfPriority(subtask);
+        } else {
+            throw new IllegalArgumentException(String.format("Задача %s пересекается с одной из существующих задач", subtask.toString()));
+        }
     }
 
     @Override
@@ -150,6 +193,8 @@ public class InMemoryTaskManager implements TaskManager {
         historyManager.remove(subtask.getId());
         Status newStatusEpic = updateEpicStatus(epic);
         epic.setStatus(newStatusEpic);
+        epic.updateDateTimeDuration();
+        deleteTaskInTasksOfPriority(subtask);
     }
 
     @Override
@@ -163,9 +208,14 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void clearSubtask() {
-        for (int key : subTasks.keySet()) {
-            historyManager.remove(key);
-        }
+        subTasks.entrySet().stream()
+                .forEach(
+                        entry -> {
+                            historyManager.remove(entry.getKey());
+                            deleteTaskInTasksOfPriority(entry.getValue());
+                        }
+                );
+
         subTasks.clear();
         for (Epic epic : epics.values()) {
             epic.clearSubtask();
@@ -177,12 +227,17 @@ public class InMemoryTaskManager implements TaskManager {
     public void clearSubtask(Epic epic) {
         epic.clearSubtask();
         HashMap<Integer, Subtask> subTasksEpic = epic.getSubTasks();
-        for (int key : subTasksEpic.keySet()) {
-            subTasks.remove(key);
-            historyManager.remove(key);
-        }
+        subTasksEpic.entrySet().stream()
+                .forEach(
+                        entry -> {
+                            historyManager.remove(entry.getKey());
+                            subTasks.remove(entry.getKey());
+                            deleteTaskInTasksOfPriority(entry.getValue());
+                        }
+                );
         Status newStatusEpic = updateEpicStatus(epic);
         epic.setStatus(newStatusEpic);
+        epic.updateDateTimeDuration();
     }
 
     @Override
@@ -281,6 +336,29 @@ public class InMemoryTaskManager implements TaskManager {
 
         return Status.NEW;
 
+    }
+
+    private void addTaskIntasksOfPriority(Task task) {
+        //добавляем только с непустой датой старта
+        if (task.getStartTime() != null) {
+            tasksOfPriority.add(task);
+        }
+    }
+
+    private boolean isIntersectionsTaskInTasksOfPriority(Task task) {
+        return tasksOfPriority.stream()
+                .anyMatch(existingTask -> isIntersectionsTwoTask(existingTask, task));
+    }
+
+    private boolean isIntersectionsTwoTask(Task task1, Task task2) {
+        return task1.getStartTime().isBefore(task2.getEndTime()) && task1.getEndTime().isAfter(task2.getStartTime());
+    }
+
+    private void deleteTaskInTasksOfPriority(Task task) {
+        //TreeSet.contains() может работать неккоректно, сравнение идет по compareTo()
+        if (tasksOfPriority.stream().toList().contains(task)) {
+            tasksOfPriority.remove(task);
+        }
     }
 
 }

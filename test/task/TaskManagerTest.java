@@ -1,5 +1,6 @@
 package task;
 
+import manager.NotFoundException;
 import manager.TaskManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -28,7 +29,7 @@ public abstract class TaskManagerTest<T extends TaskManager> {
 
     //тест проверяет, что TaskManager действительно добавляет задачи и может найти их по id;
     @Test
-    void addNewTask() {
+    void addNewTask() throws NotFoundException {
         Task task = new Task("Тестовая задача", "Описание тестовой задачи", currentDate, duration1m);
         int taskId = taskManager.addTask(task);
         Task savedTask = taskManager.getTask(taskId);
@@ -44,7 +45,7 @@ public abstract class TaskManagerTest<T extends TaskManager> {
 
     //тест проверяет, что TaskManager действительно добавляет таски субтаски и может найти их по id;
     @Test
-    void addNewEpicSubtask() {
+    void addNewEpicSubtask() throws NotFoundException {
         //Эпики
         Epic epic = new Epic("Тестовый эпик", "Описание тестового эпика");
         int epicId = taskManager.addEpic(epic);
@@ -100,7 +101,7 @@ public abstract class TaskManagerTest<T extends TaskManager> {
 
     //тест проверяет неизменность задачи (по всем полям) при добавлении задачи в менеджер
     @Test
-    void checkTheImmutabilityOfTaskWhenAddingToManager() {
+    void checkTheImmutabilityOfTaskWhenAddingToManager() throws NotFoundException {
         Task task = new Task("Тестовая задача", "Описание тестовой задачи", currentDate, duration1m);
         int taskId = taskManager.addTask(task);
         Task savedTask = taskManager.getTask(taskId);
@@ -112,7 +113,7 @@ public abstract class TaskManagerTest<T extends TaskManager> {
     //4) создайте тест, в котором проверяется неизменность задачи (по всем полям) при добавлении задачи в менеджер
     //проверяется неизменность задачи (по всем полям) при добавлении задачи в менеджер
     @Test
-    void checkTheImmutabilityOfEpicSubtaskWhenAddingToManager() {
+    void checkTheImmutabilityOfEpicSubtaskWhenAddingToManager() throws NotFoundException {
         Epic epic = new Epic("Тестовый эпик", "Описание тестового эпика");
         int epicId = taskManager.addEpic(epic);
         Epic savedEpic = taskManager.getEpic(epicId);

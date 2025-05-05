@@ -41,7 +41,7 @@ class ManagerTest {
     }
 
     @Test
-    void testHistory() {
+    void testHistory() throws NotFoundException, NotFoundException {
         TaskManager taskManager = Managers.getDefault();
         Task task = new Task("Тестовая задача", "Описание тестовой задачи", currentDate, duration1m);
         int taskId = taskManager.addTask(task);
@@ -62,7 +62,7 @@ class ManagerTest {
 
     //тест проверяет что задача, добавляемая в HistoryManager, сохраняет предыдущую версию задачи и её данных.
     @Test
-    void epicSubtaskAdedToTheHistoryManagerSavesPreviousVersionOfTaskAndData() {
+    void epicSubtaskAdedToTheHistoryManagerSavesPreviousVersionOfTaskAndData() throws NotFoundException {
         //создали эпик в переменную epic
         Epic epic = new Epic("Тестовый эпик", "Описание тестового эпика");
         int epicId = taskInMemoryManager.addEpic(epic);
@@ -97,7 +97,7 @@ class ManagerTest {
 
     //тест проверяет что задача, добавляемая в HistoryManager, сохраняет предыдущую версию задачи и её данных.
     @Test
-    void taskAdedToTheHistoryManagerSavesPreviousVersionOfTaskAndData() {
+    void taskAdedToTheHistoryManagerSavesPreviousVersionOfTaskAndData() throws NotFoundException {
         //создаем таску помещаем ее в переменную task
         Task task = new Task("Тестовая задача", "Описание тестовой задачи", currentDate, duration1m);
         int taskId = taskInMemoryManager.addTask(task);

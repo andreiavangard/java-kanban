@@ -115,7 +115,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
     @Override
-    public Task getTask(int taskId) {
+    public Task getTask(int taskId) throws NotFoundException {
         Task task = super.getTask(taskId);
         return task;
     }
@@ -152,7 +152,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
     @Override
-    public Epic getEpic(int epicId) {
+    public Epic getEpic(int epicId) throws NotFoundException {
         Epic epic = super.getEpic(epicId);
         save();
         return epic;
@@ -202,7 +202,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
     @Override
-    public Subtask getSubtask(int subtaskId) {
+    public Subtask getSubtask(int subtaskId) throws NotFoundException {
         Subtask subTask = super.getSubtask(subtaskId);
         return subTask;
     }

@@ -1,6 +1,7 @@
 package task;
 
 import manager.InMemoryTaskManager;
+import manager.NotFoundException;
 import org.junit.jupiter.api.Test;
 
 public class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager> {
@@ -11,7 +12,7 @@ public class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager
 
     @Override
     @Test
-    void addNewTask() {
+    void addNewTask() throws NotFoundException {
         super.addNewTask();
     }
 
@@ -23,7 +24,7 @@ public class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager
 
     @Override
     @Test
-    void checkTheImmutabilityOfTaskWhenAddingToManager() {
+    void checkTheImmutabilityOfTaskWhenAddingToManager() throws NotFoundException {
         super.checkTheImmutabilityOfTaskWhenAddingToManager();
     }
 
@@ -41,7 +42,7 @@ public class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager
 
     @Override
     @Test
-    void addNewEpicSubtask() {
+    void addNewEpicSubtask() throws NotFoundException {
         super.addNewEpicSubtask();
     }
 
@@ -53,7 +54,7 @@ public class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager
 
     @Override
     @Test
-    void checkTheImmutabilityOfEpicSubtaskWhenAddingToManager() {
+    void checkTheImmutabilityOfEpicSubtaskWhenAddingToManager() throws NotFoundException {
         super.checkTheImmutabilityOfEpicSubtaskWhenAddingToManager();
     }
 

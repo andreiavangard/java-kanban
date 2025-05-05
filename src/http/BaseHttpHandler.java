@@ -80,9 +80,9 @@ public class BaseHttpHandler {
                     return Endpoint.UNKNOWN;
                 }
             case "POST":
-                if (!body.isEmpty() && bodyIsValidJson(body) && !InBodyIsId(body)) {
+                if (!body.isEmpty() && bodyIsValidJson(body) && !inBodyIsId(body)) {
                     return Endpoint.CREATE_ITEM;
-                } else if (!body.isEmpty() && bodyIsValidJson(body) && InBodyIsId(body)) {
+                } else if (!body.isEmpty() && bodyIsValidJson(body) && inBodyIsId(body)) {
                     return Endpoint.UPDATE_ITEM;
                 } else {
                     return Endpoint.UNKNOWN;
@@ -107,7 +107,7 @@ public class BaseHttpHandler {
         }
     }
 
-    private boolean InBodyIsId(String body) {
+    private boolean inBodyIsId(String body) {
         JsonObject jsonObject = JsonParser.parseString(body).getAsJsonObject();
         int id = jsonObject.get("id").getAsInt();
         return id != 0;

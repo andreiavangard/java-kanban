@@ -2,6 +2,7 @@ package task;
 
 import manager.FileBackedTaskManager;
 import manager.ManagerSaveException;
+import manager.NotFoundException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -31,7 +32,7 @@ public class FileBackedTaskManagerTest extends TaskManagerTest<FileBackedTaskMan
 
     @Override
     @Test
-    void addNewTask() {
+    void addNewTask() throws NotFoundException {
         assertNotNull(taskManager, "Не удалось создать taskManager.");
         super.addNewTask();
     }
@@ -45,7 +46,7 @@ public class FileBackedTaskManagerTest extends TaskManagerTest<FileBackedTaskMan
 
     @Override
     @Test
-    void checkTheImmutabilityOfTaskWhenAddingToManager() {
+    void checkTheImmutabilityOfTaskWhenAddingToManager() throws NotFoundException {
         assertNotNull(taskManager, "Не удалось создать taskManager.");
         super.checkTheImmutabilityOfTaskWhenAddingToManager();
     }
@@ -66,7 +67,7 @@ public class FileBackedTaskManagerTest extends TaskManagerTest<FileBackedTaskMan
 
     @Override
     @Test
-    void addNewEpicSubtask() {
+    void addNewEpicSubtask() throws NotFoundException {
         assertNotNull(taskManager, "Не удалось создать taskManager.");
         super.addNewEpicSubtask();
     }
@@ -80,7 +81,7 @@ public class FileBackedTaskManagerTest extends TaskManagerTest<FileBackedTaskMan
 
     @Override
     @Test
-    void checkTheImmutabilityOfEpicSubtaskWhenAddingToManager() {
+    void checkTheImmutabilityOfEpicSubtaskWhenAddingToManager() throws NotFoundException {
         assertNotNull(taskManager, "Не удалось создать taskManager.");
         super.checkTheImmutabilityOfEpicSubtaskWhenAddingToManager();
     }
@@ -151,7 +152,7 @@ public class FileBackedTaskManagerTest extends TaskManagerTest<FileBackedTaskMan
     //тест проверяет правильность записи/востановления данных из файла
     //строгая проверка по всем полям
     @Test
-    void strictСorrectnessOfDataRecoveryFromFile() throws IOException {
+    void strictСorrectnessOfDataRecoveryFromFile() throws IOException, NotFoundException {
         final File[] tempFile = new File[1];
         assertDoesNotThrow(() -> {
             tempFile[0] = File.createTempFile("fm_", ".csv");
@@ -209,7 +210,7 @@ public class FileBackedTaskManagerTest extends TaskManagerTest<FileBackedTaskMan
     //тест проверяет правильность записи/востановления данных из файла
     //мягкая проверка через equals, по условию таски подобны если совпадает id
     @Test
-    void softСorrectnessOfDataRecoveryFromFile() throws IOException {
+    void softСorrectnessOfDataRecoveryFromFile() throws IOException, NotFoundException {
         final File[] tempFile = new File[1];
         assertDoesNotThrow(() -> {
             tempFile[0] = File.createTempFile("fm_", ".csv");

@@ -18,7 +18,7 @@ public interface TaskManager {
 
     void clearTask();
 
-    Task getTask(int taskId);
+    Task getTask(int taskId) throws NotFoundException;
 
     int addEpic(Epic epic);
 
@@ -30,7 +30,7 @@ public interface TaskManager {
 
     void clearEpics();
 
-    Epic getEpic(int epicId);
+    Epic getEpic(int epicId) throws NotFoundException;
 
     int addSubtask(Subtask subtask, Epic epic);
 
@@ -42,7 +42,7 @@ public interface TaskManager {
 
     void clearSubtask();
 
-    Subtask getSubtask(int subtaskId);
+    Subtask getSubtask(int subtaskId) throws NotFoundException;
 
     void clearSubtask(Epic epic);
 
@@ -57,4 +57,6 @@ public interface TaskManager {
     Task getTaskInHistoryById(int id);
 
     Task[] getPrioritizedTasks();
+
+    boolean isIntersectionsTaskInTasksOfPriority(Task task);
 }

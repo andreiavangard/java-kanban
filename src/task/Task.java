@@ -141,5 +141,7 @@ public class Task {
         return LocalDateTime.parse(dateTimeString, formatterDataTimeTask);
     }
 
-
+    public static DateTimeFormatter getFormatterDataTimeTask() {
+        return formatterDataTimeTask;
+    }
 }

@@ -79,8 +79,11 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public Task getTask(int taskId) {
+    public Task getTask(int taskId) throws NotFoundException {
         Task task = tasks.get(taskId);
+        if (task == null) {
+            throw new NotFoundException(String.format("Задача с ид %s не найдена", taskId));
+        }
         historyManager.add(task.clone());
         return task;
     }
@@ -144,8 +147,11 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public Epic getEpic(int epicId) {
+    public Epic getEpic(int epicId) throws NotFoundException {
         Epic epic = epics.get(epicId);
+        if (epic == null) {
+            throw new NotFoundException("Эпик с ID=" + epicId + " не найдена");
+        }
         historyManager.add(epic.clone());
         return epic;
     }
@@ -253,8 +259,11 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public Subtask getSubtask(int subtaskId) {
+    public Subtask getSubtask(int subtaskId) throws NotFoundException {
         Subtask subTask = subTasks.get(subtaskId);
+        if (subTask == null) {
+            throw new NotFoundException("Задача с ID=" + subtaskId + " не найдена");
+        }
         historyManager.add(subTask.clone());
         return subTask;
     }
@@ -345,7 +354,7 @@ public class InMemoryTaskManager implements TaskManager {
         }
     }
 
-    private boolean isIntersectionsTaskInTasksOfPriority(Task task) {
+    public boolean isIntersectionsTaskInTasksOfPriority(Task task) {
         return tasksOfPriority.stream()
                 .anyMatch(existingTask -> isIntersectionsTwoTask(existingTask, task));
     }

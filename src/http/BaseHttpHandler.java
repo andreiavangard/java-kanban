@@ -10,7 +10,6 @@ import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 
 public class BaseHttpHandler {
-    protected Endpoint endpoint;
 
     protected void sendText(HttpExchange httpExchange, String text) throws IOException {
         byte[] response = text.getBytes(StandardCharsets.UTF_8);
@@ -26,10 +25,6 @@ public class BaseHttpHandler {
         httpExchange.sendResponseHeaders(201, response.length);
         httpExchange.getResponseBody().write(response);
         httpExchange.close();
-    }
-
-    public void sendNotFound() throws IOException {
-
     }
 
     public void sendHasInteractions(HttpExchange httpExchange, String text) throws IOException {

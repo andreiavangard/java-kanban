@@ -17,9 +17,7 @@ import java.time.LocalDateTime;
 import adapters.LocalDateTimeAdapter;
 import adapters.DurationTypeAdapter;
 
-
 public class HttpTaskServer {
-
 
     private static final int PORT = 8080;
     public static final Charset DEFAULT_CHARSET = StandardCharsets.UTF_8;
@@ -34,8 +32,6 @@ public class HttpTaskServer {
         TaskManager taskManager = Managers.getDefault();
         HttpTaskServer httpTaskServer = new HttpTaskServer(taskManager);
         httpTaskServer.start();
-
-
     }
 
     public void start() throws IOException {
